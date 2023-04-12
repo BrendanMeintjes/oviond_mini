@@ -10,7 +10,8 @@ import { LoginWithFaceBook } from './LoginWithFaceBook'
 import { NewClient } from './NewClient'
 import { Client } from './Client'
 
-const toggleChecked = ({ _id, isChecked }) => Meteor.call('tasks.setIsChecked', _id, !isChecked)
+const toggleChecked = ({ _id, isChecked }) =>
+  Meteor.call('tasks.setIsChecked', _id, !isChecked)
 
 const deleteTask = ({ _id }) => Meteor.call('tasks.remove', _id)
 
@@ -30,12 +31,19 @@ export const App = () => {
       return []
     }
 
-    return TasksCollection.find(hideCompleted ? pendingOnlyFilter : userFilter, {
-      sort: { createdAt: -1 },
-    }).fetch()
+    return TasksCollection.find(
+      hideCompleted ? pendingOnlyFilter : userFilter,
+      {
+        sort: { createdAt: -1 },
+      }
+    ).fetch()
   })
 
-  const clients = useTracker(() => ClientsCollection.find({}, { sort: { createdAt: -1 } }).fetch())
+  const clients = useTracker(() =>
+    ClientsCollection.find({}, { sort: { createdAt: -1 } }).fetch()
+  )
+  console.log(clients)
+  console.log(tasks)
 
   const pendingTasksCount = useTracker(() => {
     if (!user) {
@@ -45,15 +53,17 @@ export const App = () => {
     return TasksCollection.find(pendingOnlyFilter).count()
   })
 
-  const pendingTasksTitle = `${pendingTasksCount ? ` (${pendingTasksCount})` : ''}`
+  const pendingTasksTitle = `${
+    pendingTasksCount ? ` (${pendingTasksCount})` : ''
+  }`
 
   const logout = () => Meteor.logout()
 
   return (
-    <div className='app'>
+    <div className="app">
       <header>
-        <div className='app-bar'>
-          <div className='app-header'>
+        <div className="app-bar">
+          <div className="app-header">
             <h1>
               📝️ To Do List
               {pendingTasksTitle}
@@ -62,26 +72,35 @@ export const App = () => {
         </div>
       </header>
 
-      <div className='main'>
+      <div className="main">
         {user ? (
           <Fragment>
-            <div className='user' onClick={logout}>
+            <div className="user" onClick={logout}>
               {user.username} 🚪
             </div>{' '}
             <TaskForm user={user} />
-            <div className='filter'>
-              <button onClick={() => setHideCompleted(!hideCompleted)}>{hideCompleted ? 'Show All' : 'Hide Completed'}</button>
+            <div className="filter">
+              <button onClick={() => setHideCompleted(!hideCompleted)}>
+                {hideCompleted ? 'Show All' : 'Hide Completed'}
+              </button>
             </div>
-            <ul className='tasks'>
+            <ul className="tasks">
               {tasks.map((task) => (
-                <Task key={task._id} task={task} onCheckboxClick={toggleChecked} onDeleteClick={deleteTask} />
+                <Task
+                  key={task._id}
+                  task={task}
+                  onCheckboxClick={toggleChecked}
+                  onDeleteClick={deleteTask}
+                />
               ))}
             </ul>
             <LoginWithFaceBook />
             <NewClient user={user} />
-            {clients.map((client) => (
-              <Client key={client._id} client={client} />
-            ))}
+            <ul className="tasks">
+              {clients.map((client) => (
+                <Client key={client._id} client={client} />
+              ))}
+            </ul>
           </Fragment>
         ) : (
           <LoginForm />
