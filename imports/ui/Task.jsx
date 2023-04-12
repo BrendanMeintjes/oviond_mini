@@ -3,14 +3,9 @@ import React from 'react'
 export const Task = ({ task, onCheckboxClick, onDeleteClick }) => {
   return (
     <li>
-      <input
-        type="checkbox"
-        checked={!!task.isChecked}
-        onClick={() => onCheckboxClick(task)}
-        readOnly
-      />
+      <input type='checkbox' checked={!!task.isChecked} onClick={() => onCheckboxClick(task)} readOnly />
       <span>{task.text}</span>
-      <button onClick={() => onDeleteClick(task)}>&times;</button>{' '}
+      <button onClick={() => onDeleteClick(task)}>&times;</button> <a onClick={() => onDeleteClick(task)}>delete</a>
     </li>
   )
 }

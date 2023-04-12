@@ -1,22 +1,18 @@
 import { Meteor } from 'meteor/meteor'
 import React, { useState, Fragment } from 'react'
 import { useTracker } from 'meteor/react-meteor-data'
-import { TasksCollection } from '/imports/api/TasksCollection'
+import { TasksCollection } from '/imports/db/TasksCollection'
+import { ClientsCollection } from '/imports/db/ClientsCollection'
 import { Task } from './Task'
 import { TaskForm } from './TaskForm'
 import { LoginForm } from './LoginForm'
 import { LoginWithFaceBook } from './LoginWithFaceBook'
-import { ClientForm } from './ClientForm'
+import { NewClient } from './NewClient'
+import { Client } from './Client'
 
-const toggleChecked = ({ _id, isChecked }) => {
-  TasksCollection.update(_id, {
-    $set: {
-      isChecked: !isChecked,
-    },
-  })
-}
+const toggleChecked = ({ _id, isChecked }) => Meteor.call('tasks.setIsChecked', _id, !isChecked)
 
-const deleteTask = ({ _id }) => TasksCollection.remove(_id)
+const deleteTask = ({ _id }) => Meteor.call('tasks.remove', _id)
 
 export const App = () => {
   const user = useTracker(() => Meteor.user())
@@ -38,6 +34,8 @@ export const App = () => {
       sort: { createdAt: -1 },
     }).fetch()
   })
+
+  const clients = useTracker(() => ClientsCollection.find({}, { sort: { createdAt: -1 } }).fetch())
 
   const pendingTasksCount = useTracker(() => {
     if (!user) {
@@ -80,7 +78,10 @@ export const App = () => {
               ))}
             </ul>
             <LoginWithFaceBook />
-            {/* <ClientForm /> */}
+            <NewClient user={user} />
+            {clients.map((client) => (
+              <Client key={client._id} client={client} />
+            ))}
           </Fragment>
         ) : (
           <LoginForm />

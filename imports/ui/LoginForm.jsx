@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 
 import { LoginWithFaceBook } from './LoginWithFaceBook'
 
-import { LoginWithGithub } from './LoginWithGithub'
-
 export const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -18,7 +16,6 @@ export const LoginForm = () => {
   return (
     <form onSubmit={submit} className='login-form'>
       <LoginWithFaceBook />
-      <LoginWithGithub />
 
       <label htmlFor='username'>Username</label>
 
