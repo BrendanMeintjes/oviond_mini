@@ -1,18 +1,38 @@
 import { Meteor } from 'meteor/meteor'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTracker } from 'meteor/react-meteor-data'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
 import { Client } from '../Client'
 
 const IntegrationsScreen = () => {
   const [showModal, setShowModal] = React.useState(false)
+  const [selectedPage, setSelectedPage] = useState(null)
+  const { id } = useParams()
 
   // const page = useTracker(() => ClientsCollection.findOne({ _id: id }))
 
   const user = useTracker(() => Meteor.user())
   const pages = user?.profile?.pages
   console.log(pages)
+
+  const handlePageChange = (e) => {
+    setSelectedPage(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    ClientsCollection.upsert(
+      { _id: id }, // filter by client ID
+      {
+        $set: {
+          pageId: selectedPage,
+        },
+      }
+    )
+    console.log(selectedPage)
+  }
 
   return (
     <>
@@ -33,17 +53,24 @@ const IntegrationsScreen = () => {
                   </button>
                 </div>
                 {/*body*/}
-                <div className='relative p-6 flex-auto'>
-                  {pages?.map((page) => (
-                    <p key={page.id}> {page.name} </p>
+
+                <div>
+                  <h2>Select your page:</h2>
+                  {pages.map((page) => (
+                    <div key={page.id}>
+                      <input type='radio' id={page.id} name='pages' value={page.id} checked={selectedPage === page.id} onChange={handlePageChange} />
+                      <label htmlFor={page.id}>{page.name}</label>
+                    </div>
                   ))}
+                  {/* {selectedPage && <p>You selected: {selectedPage}</p>} */}
                 </div>
+
                 {/*footer*/}
                 <div className='flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b'>
                   <button className='text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150' type='button' onClick={() => setShowModal(false)}>
                     Close
                   </button>
-                  <button className='bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150' type='button' onClick={() => setShowModal(false)}>
+                  <button className='bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150' type='button' onClick={handleSubmit}>
                     Save Changes
                   </button>
                 </div>

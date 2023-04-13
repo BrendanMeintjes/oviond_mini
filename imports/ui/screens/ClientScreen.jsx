@@ -22,7 +22,7 @@ const ClientScreen = () => {
       <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>New Project</button>
 
       <h1>ClientScreen</h1>
-      <p>Client name: {client?._id}</p>
+      <p>Client name: {client?.clientCompanyName}</p>
     </div>
   )
 }
