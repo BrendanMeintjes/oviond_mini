@@ -7,10 +7,11 @@ Meteor.methods({
       throw new Meteor.Error('Not authorized.')
     }
 
-    ClientsCollection.insert({
+    const newClientId = ClientsCollection.insert({
       clientCompanyName,
       userId: this.userId,
     })
+    return newClientId
   },
 
   'clients.remove'(clientId) {
