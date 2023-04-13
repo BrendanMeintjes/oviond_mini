@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useTracker } from 'meteor/react-meteor-data'
+import NewProject from '../NewProject'
 
 import { ClientsCollection } from '/imports/db/ClientsCollection'
 
@@ -19,7 +20,8 @@ const ClientScreen = () => {
 
   return (
     <div>
-      <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>New Project</button>
+      {/* <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>New Project</button> */}
+      <NewProject />
 
       <h1>ClientScreen</h1>
       <p>Client name: {client?.clientCompanyName}</p>

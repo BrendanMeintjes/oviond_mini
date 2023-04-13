@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { useTracker } from 'meteor/react-meteor-data'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
-import { Client } from '../Client'
+import { Client } from './Client'
 
-const IntegrationsScreen = () => {
+const NewProject = () => {
   const [showModal, setShowModal] = React.useState(false)
-  const [selectedPage, setSelectedPage] = useState(null)
-  const [accessToken, setAccessToken] = useState(null)
+  const [projectName, SetprojectName] = useState(null)
+
   const { id } = useParams()
   navigate = useNavigate()
 
@@ -18,28 +18,11 @@ const IntegrationsScreen = () => {
   const pages = user?.profile?.pages
   console.log(pages)
 
-  const handlePageChange = (e) => {
-    const selectedPageId = e.target.value
-    setSelectedPage(selectedPageId)
-    const selectedPage = pages.find((page) => page.id === selectedPageId)
-    setAccessToken(selectedPage.access_token)
-  }
-
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    ClientsCollection.upsert(
-      { _id: id }, // filter by client ID
-      {
-        $set: {
-          pageId: selectedPage,
-          accessToken: accessToken,
-        },
-      }
-    )
-    console.log(selectedPage)
-    console.log(accessToken)
-    navigate(`/${id}`)
+    // console.log(selectedPage)
+    // navigate(`/${id}`)
   }
 
   return (
@@ -49,7 +32,7 @@ const IntegrationsScreen = () => {
         type="button"
         onClick={() => setShowModal(true)}
       >
-        Facebook
+        Add Project
       </button>
       {showModal ? (
         <>
@@ -72,21 +55,32 @@ const IntegrationsScreen = () => {
                 {/*body*/}
 
                 <div>
-                  <h2>Select your page:</h2>
-                  {pages.map((page) => (
-                    <div key={page.id}>
-                      <input
-                        type="radio"
-                        id={page.id}
-                        name="pages"
-                        value={page.id}
-                        checked={selectedPage === page.id}
-                        onChange={handlePageChange}
-                      />
-                      <label htmlFor={page.id}>{page.name}</label>
-                    </div>
-                  ))}
-                  {/* {selectedPage && <p>You selected: {selectedPage}</p>} */}
+                  <form
+                    className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+                    onSubmit={handleSubmit}
+                  >
+                    <label
+                      className="block text-gray-700 text-sm font-bold mb-2"
+                      htmlFor="projectName"
+                    >
+                      Project Name
+                    </label>
+                    <input
+                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      id="projectName"
+                      type="text"
+                      placeholder="project name"
+                      value={projectName}
+                      onChange={(e) => setProjectName(e.target.value)}
+                    />
+
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                      type="submit"
+                    >
+                      Submit
+                    </button>
+                  </form>
                 </div>
 
                 {/*footer*/}
@@ -116,4 +110,4 @@ const IntegrationsScreen = () => {
   )
 }
 
-export default IntegrationsScreen
+export default NewProject
