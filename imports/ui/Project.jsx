@@ -1,28 +1,21 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useTracker } from 'meteor/react-meteor-data'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import axios from 'axios'
+import { ProjectsCollection } from '../db/ProjectsCollection'
 
 export const Chart = () => {
-  const [likesData, setLikesData] = useState([])
+  const { id, projectId } = useParams()
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60
-      const now = Math.floor(Date.now() / 1000)
-      const response = await axios.get(
-        `https://graph.facebook.com/101221036282378/insights/page_fans?since=${thirtyDaysAgo}&until=${now}&period=day&access_token=EAAImgPTZCQjoBALhgrCb1ZBglPNpEgRW7Ess6esBaOUqMNkk9Pefv9hFZCL3a0M1quRujPMbyaOWRW32XcMUF7kWvHMKr6w1d1GWnIrZAgLkda0ce0MIsAbF92oPEjglyDFZCiVttMLGuk7XznAAa4nUjCYZBZBop3GJPRAKRT9fEVrPSwWsldLukogF91ZBIJ0ZD`
-      )
-      console.log(response.data.data[0].values)
-      const data = await response.data.data[0].values
-      console.log(data)
-      setLikesData(data)
-    }
-    fetchData()
-  }, [])
+  const project = useTracker(() => ProjectsCollection.findOne({ _id: projectId }))
+  console.log(project)
 
-  const chartData = likesData.map(({ value, end_time }) => ({
-    x: new Date(end_time),
+  const likesData = project?.fbLikes
+
+  const chartData = likesData?.map(({ value, end_time }) => ({
+    x: new Date(end_time.substring(0, 10)),
     y: value,
   }))
 
@@ -31,7 +24,22 @@ export const Chart = () => {
       type: 'line',
     },
     title: {
-      text: 'Total Likes Over the Past 30 Days',
+      display: true,
+      text: 'Total Page Likes',
+      color: 'red',
+      fontColor: '#333',
+      fontSize: 24,
+      fontStyle: 'bold',
+      align: 'start',
+    },
+
+    subtitle: {
+      display: true,
+      text: 'Last 30 days',
+      fontColor: '#333',
+      fontSize: 14,
+      fontStyle: 'normal',
+      align: 'start',
     },
     xAxis: {
       type: 'datetime',
@@ -39,7 +47,7 @@ export const Chart = () => {
 
     yAxis: {
       title: {
-        text: 'Total Likes',
+        text: null,
       },
     },
     series: [
@@ -52,7 +60,8 @@ export const Chart = () => {
 
   return (
     <>
-      <div>
+      <h3 className='text-3xl text-center'>FACEBOOK</h3>
+      <div className='px-10'>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </>

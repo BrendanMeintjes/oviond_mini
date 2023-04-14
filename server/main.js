@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base'
 import { TasksCollection } from '/imports/db/TasksCollection'
 import '/imports/api/tasksMethods'
 import '/imports/api/clientMethods'
+import '/imports/api/projectMethods'
 
 import { ServiceConfiguration } from 'meteor/service-configuration'
 import axios from 'axios'
