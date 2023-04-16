@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { Meteor } from 'meteor/meteor'
+
 import { ProjectsCollection } from '/imports/db/ProjectsCollection'
 
 const EditProject = ({ project, onClose }) => {
@@ -7,10 +9,12 @@ const EditProject = ({ project, onClose }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    ProjectsCollection.update(project._id, {
-      $set: {
-        projectName,
-      },
+    Meteor.call('projects.update', project._id, projectName, (error) => {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log('Project name updated successfully.')
+      }
     })
 
     onClose()

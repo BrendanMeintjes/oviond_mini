@@ -27,15 +27,13 @@ const IntegrationsScreen = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    ClientsCollection.upsert(
-      { _id: id }, // filter by client ID
-      {
-        $set: {
-          pageId: selectedPage,
-          accessToken: accessToken,
-        },
+    Meteor.call('client.addToken', id, selectedPage, accessToken, (error) => {
+      if (error) {
+        console.error(error)
+      } else {
+        console.log('Client page and token updated successfully!')
       }
-    )
+    })
     navigate(`/client/${id}`)
   }
 

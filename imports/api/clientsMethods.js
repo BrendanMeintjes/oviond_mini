@@ -20,6 +20,18 @@ Meteor.methods({
     ClientsCollection.update({ _id: id }, { $set: { clientCompanyName: name } })
   },
 
+  'client.addToken'(id, selectedPage, accessToken) {
+    ClientsCollection.upsert(
+      { _id: id },
+      {
+        $set: {
+          pageId: selectedPage,
+          accessToken: accessToken,
+        },
+      }
+    )
+  },
+
   'client.remove'(id) {
     check(id, String)
 

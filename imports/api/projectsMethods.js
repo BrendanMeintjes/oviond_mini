@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor'
+import { check } from 'meteor/check'
 import { ProjectsCollection } from '/imports/db/ProjectsCollection'
 
 Meteor.methods({
@@ -12,6 +14,10 @@ Meteor.methods({
       fbLikes: likesData,
     })
     return newProjectId
+  },
+
+  'projects.update'(id, name) {
+    ProjectsCollection.update({ _id: id }, { $set: { projectName: name } })
   },
 
   'projects.remove'(projectId) {

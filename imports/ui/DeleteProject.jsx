@@ -1,9 +1,10 @@
 import React from 'react'
+import { Meteor } from 'meteor/meteor'
 import { ProjectsCollection } from '/imports/db/ProjectsCollection'
 
 const DeleteProject = ({ project, onClose }) => {
   const handleDelete = () => {
-    ProjectsCollection.remove(project._id)
+    Meteor.call('projects.remove', project._id)
     onClose()
   }
 
