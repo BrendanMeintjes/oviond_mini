@@ -1,11 +1,17 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useTracker } from 'meteor/react-meteor-data'
 
 export default function Navbar() {
   const location = useLocation()
   const id = location.pathname.split('/')[2]
 
   const [navbarOpen, setNavbarOpen] = React.useState(false)
+
+  const user = useTracker(() => Meteor.user())
+
+  const logout = () => Meteor.logout()
+
   return (
     <>
       <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-blue-600 mb-3">
@@ -18,7 +24,14 @@ export default function Navbar() {
               <i className="fa-solid fa-house text-lg leading-lg text-white opacity-75"></i>
               <span className="ml-2">Home</span>
             </Link>
-
+            {user && (
+              <button
+                onClick={logout}
+                className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
+              >
+                Logout
+              </button>
+            )}
             <button
               className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"

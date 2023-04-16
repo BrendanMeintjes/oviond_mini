@@ -16,6 +16,10 @@ Meteor.methods({
     return newClientId
   },
 
+  'client.update'(id, name) {
+    ClientsCollection.update({ _id: id }, { $set: { clientCompanyName: name } })
+  },
+
   'client.remove'(id) {
     check(id, String)
 

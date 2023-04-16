@@ -36,8 +36,6 @@ const IntegrationsScreen = () => {
         },
       }
     )
-    console.log(selectedPage)
-    console.log(accessToken)
     navigate(`/client/${id}`)
   }
 

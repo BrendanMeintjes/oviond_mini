@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { Meteor } from 'meteor/meteor'
 import { useTracker } from 'meteor/react-meteor-data'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
 import DeleteClient from '../DeleteClient'
 
-export const ClientEditScreen = () => {
+const ClientEditScreen = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
@@ -18,11 +19,10 @@ export const ClientEditScreen = () => {
   // handle form submit
   const handleSubmit = (event) => {
     event.preventDefault()
-    ClientsCollection.update({ _id: id }, { $set: { clientCompanyName: name } })
+    Meteor.call('client.update', id, name)
     navigate(`/client/${id}`)
   }
 
-  // bind the function to the component instance
   const handleDeleteModalOpen = () => {
     setShowDeleteModal(true)
   }
@@ -66,3 +66,5 @@ export const ClientEditScreen = () => {
     </div>
   )
 }
+
+export default ClientEditScreen

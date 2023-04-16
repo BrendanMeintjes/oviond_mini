@@ -1,15 +1,30 @@
 import { Meteor } from 'meteor/meteor'
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import TestScreen from './screens/TestScreen'
+import { useTracker } from 'meteor/react-meteor-data'
+import HomeScreen from './screens/HomeScreen'
 import ClientScreen from './screens/ClientScreen'
 import AddClientScreen from './screens/AddClientScreen'
 import IntegrationsScreen from './screens/IntegrationsScreen'
 import ProjectScreen from './screens/ProjectScreen'
-import { ClientEditScreen } from './screens/ClientEditScreen'
+import ClientEditScreen from './screens/ClientEditScreen'
+import LoginScreen from './screens/LoginScreen'
 import Navbar from './Navbar'
 
 export const App = () => {
+  const user = useTracker(() => Meteor.user())
+
+  if (!user) {
+    return (
+      <Router>
+        <Navbar />
+
+        <main className="container mx-auto px-4 max-w-screen-xl">
+          <LoginScreen />
+        </main>
+      </Router>
+    )
+  }
   return (
     <Router>
       <Navbar />
@@ -27,7 +42,7 @@ export const App = () => {
           />
           <Route path="/client/:id/edit" element={<ClientEditScreen />} />
           <Route path="/client/:id" element={<ClientScreen />} />
-          <Route path="/" element={<TestScreen />} exact />
+          <Route path="/" element={<HomeScreen />} exact />
         </Routes>
       </main>
     </Router>
