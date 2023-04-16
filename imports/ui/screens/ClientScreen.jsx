@@ -2,29 +2,34 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useTracker } from 'meteor/react-meteor-data'
 import NewProject from '../NewProject'
-
+import { ListProject } from '../ListProject'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
+import { ProjectsCollection } from '/imports/db/ProjectsCollection'
 
 const ClientScreen = () => {
   const { id } = useParams()
-  //   const [client, seClient] = useState(null)
-
-  //   useEffect(() => {
-  //     const foundClient = ClientsCollection.findOne({ _id: id })
-  //     setClient(foundClient)
-  //     console.log('FOUND', foundClient)
-  //     return () => subscription.stop()
-  //   })
 
   const client = useTracker(() => ClientsCollection.findOne({ _id: id }))
-
+  const projects = useTracker(() =>
+    ProjectsCollection.find({ clientId: id }).fetch()
+  )
+  console.log(projects)
   return (
     <div>
-      {/* <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>New Project</button> */}
-      <NewProject />
+      <div className="flex justify-between items-center pb-5">
+        <div className="flex items-center py-2">
+          <i className="fa-solid fa-briefcase text-5xl mr-2 text-blue-600 opacity-75"></i>
+          <div>
+            <h4 className="text-2xl font-bold">Projects</h4>
+            <p className="text-gray-500">Client: {client?.clientCompanyName}</p>
+          </div>
+        </div>
+        <NewProject />
+      </div>
 
-      <h1>ClientScreen</h1>
-      <p>Client name: {client?.clientCompanyName}</p>
+      {projects.map((project) => (
+        <ListProject key={project._id} project={project} />
+      ))}
     </div>
   )
 }

@@ -4,21 +4,34 @@ import { Link } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
 import { Client } from '../Client'
 import { NewClient } from '../NewClient'
+import { LoginWithFaceBook } from '../LoginWithFaceBook'
 
 const TestScreen = () => {
-  const clients = useTracker(() => ClientsCollection.find({}, { sort: { createdAt: -1 } }).fetch())
+  const clients = useTracker(() =>
+    ClientsCollection.find({}, { sort: { createdAt: -1 } }).fetch()
+  )
 
   return (
-    <div>
-      <Link className='cardLink' to={'/addclient'}>
-        <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline' type='button'>
-          Add Client
-        </button>
-      </Link>
-      {clients.map((client) => (
-        <Client key={client._id} client={client} />
-      ))}{' '}
-    </div>
+    <>
+      <LoginWithFaceBook />
+
+      <div className="flex justify-end">
+        <Link className="cardLink" to={'/addclient'}>
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+          >
+            Add Client
+          </button>
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {clients.map((client) => (
+          <Client key={client._id} client={client} />
+        ))}
+      </div>
+    </>
   )
 }
 

@@ -23,4 +23,14 @@ Meteor.methods({
 
     ProjectsCollection.remove(projectId)
   },
+
+  'projects.removeAll'(id) {
+    check(id, String)
+
+    if (!this.userId) {
+      throw new Meteor.Error('Not authorized.')
+    }
+
+    ProjectsCollection.remove({ clientId: id })
+  },
 })

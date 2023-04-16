@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor'
+import { check } from 'meteor/check'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
+import { ProjectsCollection } from '/imports/db/ProjectsCollection'
 
 Meteor.methods({
   'clients.insert'(clientCompanyName) {
@@ -14,13 +16,14 @@ Meteor.methods({
     return newClientId
   },
 
-  'clients.remove'(clientId) {
-    check(clientId, String)
+  'client.remove'(id) {
+    check(id, String)
 
     if (!this.userId) {
       throw new Meteor.Error('Not authorized.')
     }
 
-    ClientsCollection.remove(clientId)
+    ProjectsCollection.remove({ clientId: id })
+    ClientsCollection.remove(id)
   },
 })

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
 import { Client } from '../Client'
 import { NewClient } from '../NewClient'
-import { Chart } from '../Project'
+import { Chart, client, project } from '../Project'
 
 const ProjectScreen = () => {
   return (
     <div>
-      <h3>HELLO FROM THE PROJECT SCREEN</h3> <Chart />
+      <Chart />
     </div>
   )
 }

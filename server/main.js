@@ -2,8 +2,8 @@ import { Meteor } from 'meteor/meteor'
 import { Accounts } from 'meteor/accounts-base'
 import { TasksCollection } from '/imports/db/TasksCollection'
 import '/imports/api/tasksMethods'
-import '/imports/api/clientMethods'
-import '/imports/api/projectMethods'
+import '/imports/api/clientsMethods'
+import '/imports/api/projectsMethods'
 
 import { ServiceConfiguration } from 'meteor/service-configuration'
 import axios from 'axios'
@@ -33,13 +33,20 @@ Meteor.startup(async () => {
   // }
 
   Accounts.onLogin(async (loginInfo) => {
-    if (loginInfo && loginInfo.user && loginInfo.user.services && loginInfo.user.services.facebook) {
+    if (
+      loginInfo &&
+      loginInfo.user &&
+      loginInfo.user.services &&
+      loginInfo.user.services.facebook
+    ) {
       const fbId = loginInfo.user.services.facebook.id
       const fbAccessToken = loginInfo.user.services.facebook.accessToken
       console.log(`Facebook ID: ${fbId}`)
       console.log(`Facebook access token: ${fbAccessToken}`)
 
-      const newData = await axios.get(`https://graph.facebook.com/v16.0/${fbId}/accounts?access_token=${fbAccessToken}`)
+      const newData = await axios.get(
+        `https://graph.facebook.com/v16.0/${fbId}/accounts?access_token=${fbAccessToken}`
+      )
 
       const userId = Meteor.userId() // get the current user's id
 
@@ -52,8 +59,6 @@ Meteor.startup(async () => {
         }
       )
 
-      console.log(newData.data.data)
-      console.log(Meteor.userId())
       Meteor.users.update
     }
   })

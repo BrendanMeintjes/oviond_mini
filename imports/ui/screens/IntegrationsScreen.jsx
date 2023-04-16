@@ -12,11 +12,10 @@ const IntegrationsScreen = () => {
   const { id } = useParams()
   navigate = useNavigate()
 
-  // const page = useTracker(() => ClientsCollection.findOne({ _id: id }))
+  const client = useTracker(() => ClientsCollection.findOne({ _id: id }))
 
   const user = useTracker(() => Meteor.user())
   const pages = user?.profile?.pages
-  console.log(pages)
 
   const handlePageChange = (e) => {
     const selectedPageId = e.target.value
@@ -39,18 +38,39 @@ const IntegrationsScreen = () => {
     )
     console.log(selectedPage)
     console.log(accessToken)
-    navigate(`/${id}`)
+    navigate(`/client/${id}`)
   }
 
   return (
     <>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className={`border-2 rounded-lg px-8 py-4 w-96 ${
+          client?.accessToken
+            ? 'border-blue-500'
+            : 'border-gray-300 hover:border-gray-400'
+        }`}
         type="button"
         onClick={() => setShowModal(true)}
       >
-        Facebook
+        <div className="flex items-center justify-between h-full align-items-end">
+          <div className="flex items-center">
+            <i className="fa-brands fa-square-facebook text-5xl mr-2 text-blue-900 opacity-75"></i>
+            <div className="">
+              <h4 className="font-semibold text-left">Facebook</h4>
+              <div className="flex">
+                <p className="text-gray-500">Social Media</p>
+              </div>
+            </div>
+          </div>
+          {client?.accessToken && (
+            <div className="flex items-center align-bottom">
+              <p className="text-gray-500 mr-2">Connected</p>
+              <i className="fas fa-check-circle text-green-500"></i>
+            </div>
+          )}
+        </div>
       </button>
+
       {showModal ? (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">

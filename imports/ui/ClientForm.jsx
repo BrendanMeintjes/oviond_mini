@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ClientsCollection } from '/imports/api/ClientsCollection'
+import { ClientsCollection } from '/imports/db/ClientsCollection'
 
 export const ClientForm = async () => {
   const [userAccessToken, setUserAccessToken] = useState('')
