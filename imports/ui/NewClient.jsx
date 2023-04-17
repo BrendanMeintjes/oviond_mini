@@ -1,7 +1,5 @@
 import { Meteor } from 'meteor/meteor'
-
 import React, { useState } from 'react'
-import { ClientsCollection } from '/imports/db/ClientsCollection'
 import { useNavigate } from 'react-router-dom'
 
 export const NewClient = () => {
@@ -24,32 +22,23 @@ export const NewClient = () => {
 
   return (
     <div>
-      <h5 className="text-lg font-semibold">Add New Client</h5>
-      <div className="mx-auto max-w-lg">
-        <form
-          className="bg-white w-full shadow-md rounded px-8  pb-8 mb-4"
-          onSubmit={handleSubmit}
-        >
-          <h3 className="py-5 text-xl font-semibold">Client Details</h3>
-          <label
-            className="block text-gray-700 text-sm font-semibold mb-2"
-            htmlFor="clientCompanyName"
-          >
+      <h5 className='text-lg font-semibold'>Add New Client</h5>
+      <div className='mx-auto max-w-lg'>
+        <form className='bg-white w-full shadow-md rounded px-8  pb-8 mb-4' onSubmit={handleSubmit}>
+          <h3 className='py-5 text-xl font-semibold'>Client Details</h3>
+          <label className='block text-gray-700 text-sm font-semibold mb-2' htmlFor='clientCompanyName'>
             Client Company Name
           </label>
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="clientCompanyName"
-            type="text"
-            placeholder="enter company name..."
+            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+            id='clientCompanyName'
+            type='text'
+            placeholder='enter company name...'
             value={clientCompanyName}
             onChange={(e) => setClientCompanyName(e.target.value)}
           />
-          <div className="flex justify-end pt-10">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-auto"
-              type="submit"
-            >
+          <div className='flex justify-end pt-10'>
+            <button className='bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-auto' type='submit'>
               Add Client{' '}
             </button>
           </div>

@@ -9,14 +9,11 @@ const ClientEditScreen = () => {
   const { id } = useParams()
   const navigate = useNavigate()
 
-  // get the client data from the database
   const client = useTracker(() => ClientsCollection.findOne({ _id: id }))
 
-  // create a state variable for the updated client name
   const [name, setName] = useState(client?.clientCompanyName)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-  // handle form submit
   const handleSubmit = (event) => {
     event.preventDefault()
     Meteor.call('client.update', id, name)

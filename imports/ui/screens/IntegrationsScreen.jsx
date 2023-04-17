@@ -1,9 +1,8 @@
 import { Meteor } from 'meteor/meteor'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useTracker } from 'meteor/react-meteor-data'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ClientsCollection } from '/imports/db/ClientsCollection'
-import { Client } from '../Client'
 
 const IntegrationsScreen = () => {
   const [showModal, setShowModal] = React.useState(false)
@@ -78,10 +77,8 @@ const IntegrationsScreen = () => {
                     <label htmlFor={page.id}> {page.name}</label>
                   </div>
                 ))}
-                {/* {selectedPage && <p>You selected: {selectedPage}</p>} */}
               </div>
 
-              {/*footer*/}
               <div className='flex justify-end'>
                 <button type='button' className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded' onClick={() => setShowModal(false)}>
                   Cancel
