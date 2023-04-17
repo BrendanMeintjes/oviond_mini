@@ -32,37 +32,33 @@ const ClientEditScreen = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Edit Client</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="flex flex-col mb-4">
-          <label htmlFor="name" className="mb-2 font-medium">
-            Client Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            className="border rounded-lg py-2 px-3"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
+    <div className='w-full max-w-3xl mx-auto py-5'>
+      <div className='px-5 bg-blue-50 py-5 border-t-2 border-blue-600'>
+        <h1 className='text-3xl font-bold mb-4'>Edit Client</h1>
+        <form className='' onSubmit={handleSubmit}>
+          <div className='flex flex-col mb-4'>
+            <label htmlFor='name' className='mb-2 font-medium'>
+              Client Name
+            </label>
+            <input type='text' id='name' className='border rounded-lg py-2 px-3' value={name} onChange={(event) => setName(event.target.value)} />
+          </div>
+          <div className='flex justify-end'>
+            <button type='submit' className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4  rounded-lg'>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+      <div className='flex justify-between items-center bg-red-100 border-t-2 border-red-500 px-5'>
+        <h1 className='text-3xl font-bold mb-4 my-5'>Delete Client</h1>
+
+        <div className='flex justify-end '>
+          <button onClick={handleDeleteModalOpen} className='bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg ml-4'>
+            Delete Client
+          </button>
+          {showDeleteModal && <DeleteClient client={client} onClose={handleDeleteModalClose} />}
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg"
-        >
-          Save Changes
-        </button>
-      </form>
-      <button
-        onClick={handleDeleteModalOpen}
-        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg ml-4"
-      >
-        Delete Client
-      </button>
-      {showDeleteModal && (
-        <DeleteClient client={client} onClose={handleDeleteModalClose} />
-      )}
+      </div>
     </div>
   )
 }
